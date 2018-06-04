@@ -14,3 +14,10 @@ warnings.filterwarnings('ignore')
 
 #Read the data
 data = pd.read_csv("network_backup_dataset.csv")
+
+
+"""==========================================Util methods==========================================================="""
+
+def powerset(iterable):
+    s = list(iterable)
+    return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
