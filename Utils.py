@@ -28,3 +28,6 @@ def scalar_encode_day(days):
 
 def scalar_encode_underscored(file_names):
     return [int(name.split('_')[-1]) for name in file_names]
+
+def mse(predicted, actual):
+    return mean_squared_error(predicted, actual)
