@@ -31,3 +31,33 @@ def scalar_encode_underscored(file_names):
 
 def mse(predicted, actual):
     return mean_squared_error(predicted, actual)
+
+
+def linear_regression(X, y, plot=True, model=LinearRegression()):
+    kf = KFold(n_splits=10, shuffle=True)
+
+    cv_train_rmse, cv_test_rmse = [], []
+    min_test_rmse = float("inf")
+
+    for train_index, test_index in kf.split(X):
+
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        lm = model
+        lm.fit(X_train, y_train)
+        train_rmse = mse(lm.predict(X_train), y_train)
+        test_rmse = mse(lm.predict(X_test), y_test)
+
+        if test_rmse < min_test_rmse:
+            min_test_rmse = test_rmse
+            best_model = lm
+
+        cv_train_rmse.append(train_rmse)
+        cv_test_rmse.append(test_rmse)
+
+    avg_train_rmse = np.sqrt(np.mean(cv_train_rmse))
+    avg_test_rmse = np.sqrt(np.mean(cv_test_rmse))
+
+    print("Coefficients are : ", best_model.coef_)
+    best_model_y_predict = best_model.predict(X)
