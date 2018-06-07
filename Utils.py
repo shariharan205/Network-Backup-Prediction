@@ -61,3 +61,14 @@ def linear_regression(X, y, plot=True, model=LinearRegression()):
 
     print("Coefficients are : ", best_model.coef_)
     best_model_y_predict = best_model.predict(X)
+
+    if plot:
+
+        best_model_y_predict = best_model_y_predict.reshape(y.shape)
+
+        plt.figure(figsize=(8, 5))
+        plt.scatter(y, best_model_y_predict, s=5)
+        plt.xlabel("True values")
+        plt.ylabel("Predicted values")
+        plt.title("Fitted values vs True values")
+        plt.show()
