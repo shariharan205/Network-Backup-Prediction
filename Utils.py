@@ -79,3 +79,10 @@ def linear_regression(X, y, plot=True, model=LinearRegression()):
         plt.ylabel("Residual values")
         plt.title("Residual values vs Fitted values")
         plt.show()
+
+        plt.figure(figsize=(8, 5))
+        plt.scatter(range(len(y)), y, c='g', marker='x', label='True values')
+        plt.scatter(range(len(y)), best_model_y_predict, c='b', marker='o', label='Predicted Values')
+        plt.title("Fitted values and True values")
+        plt.legend(loc='upper left')
+        plt.show()
