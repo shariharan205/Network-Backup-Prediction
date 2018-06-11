@@ -86,3 +86,13 @@ def linear_regression(X, y, plot=True, model=LinearRegression()):
         plt.title("Fitted values and True values")
         plt.legend(loc='upper left')
         plt.show()
+
+        plt.figure(figsize=(8, 5))
+        plt.scatter(range(len(y)), best_model_y_predict, c='g', s=5, zorder=2, label='Fitted values')
+        plt.scatter(range(len(y)), np.subtract(y, best_model_y_predict), c='b', s=5, zorder=1, label='Residual Values')
+        plt.title("Fitted values and Residual values")
+        plt.legend(loc='upper left')
+        plt.yscale('log')
+        plt.show()
+
+    return avg_train_rmse, avg_test_rmse
