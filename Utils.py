@@ -96,3 +96,7 @@ def linear_regression(X, y, plot=True, model=LinearRegression()):
         plt.show()
 
     return avg_train_rmse, avg_test_rmse
+
+
+def f_regr(X, Y):
+   return f_regression(X,Y,center = False)
