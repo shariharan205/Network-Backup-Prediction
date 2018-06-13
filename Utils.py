@@ -100,3 +100,6 @@ def linear_regression(X, y, plot=True, model=LinearRegression()):
 
 def f_regr(X, Y):
    return f_regression(X,Y,center = False)
+
+def mutual_info_regr(X, Y):
+    return mutual_info_regression(X, Y)
