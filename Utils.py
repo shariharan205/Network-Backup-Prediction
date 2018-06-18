@@ -103,3 +103,15 @@ def f_regr(X, Y):
 
 def mutual_info_regr(X, Y):
     return mutual_info_regression(X, Y)
+
+
+def scalar_encode(data, input_features, output_col_name):
+    X = data[input_features].values
+
+    y = data[output_col_name].values
+
+    X[:, 1] = scalar_encode_day(X[:, 1])
+    X[:, 3] = scalar_encode_underscored(X[:, 3])
+    X[:, 4] = scalar_encode_underscored(X[:, 4])
+
+    return X, y
