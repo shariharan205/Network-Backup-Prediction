@@ -117,6 +117,8 @@ def scalar_encode(data, input_features, output_col_name):
     return X, y
 
 
+"""===================================================Question 1====================================================="""
+
 data['day_number'] = (data['Week #']-1)*7+ scalar_encode_day(data['Day of Week'])
 data['Workflow_ID'] = scalar_encode_underscored(data['Work-Flow-ID'])
 
@@ -125,6 +127,12 @@ data_20 = data[data['day_number']<=20]
 
 plt.figure(figsize=(8,5))
 plt.scatter(x=data_20['day_number'],y=data_20['Size of Backup (GB)'],c=data_20['Workflow_ID'], s = 8)
+plt.xlabel('Day number')
+plt.ylabel('Backup size (GB)')
+plt.show()
+
+plt.figure(figsize=(8,5))
+plt.scatter(x=data['day_number'],y=data['Size of Backup (GB)'],c=data['Workflow_ID'], s = 8)
 plt.xlabel('Day number')
 plt.ylabel('Backup size (GB)')
 plt.show()
