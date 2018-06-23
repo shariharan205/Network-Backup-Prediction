@@ -117,8 +117,6 @@ def scalar_encode(data, input_features, output_col_name):
     return X, y
 
 
-"""===================================================Question 1====================================================="""
-
 data['day_number'] = (data['Week #']-1)*7+ scalar_encode_day(data['Day of Week'])
 data['Workflow_ID'] = scalar_encode_underscored(data['Work-Flow-ID'])
 
