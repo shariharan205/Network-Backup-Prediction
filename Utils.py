@@ -1,3 +1,7 @@
+"""
+Utils file for Network Backup Prediction 
+Consists methods that encodes the data, performs regression, regularization and optimization
+"""
 import calendar
 import pandas as pd
 import numpy as np
@@ -117,9 +121,10 @@ def scalar_encode(data, input_features, output_col_name):
     return X, y
 
 
+"""===============================Plotting backup sizes for all workflows for a 20day and 105day period====================="""
+
 data['day_number'] = (data['Week #']-1)*7+ scalar_encode_day(data['Day of Week'])
 data['Workflow_ID'] = scalar_encode_underscored(data['Work-Flow-ID'])
-
 
 data_20 = data[data['day_number']<=20]
 
