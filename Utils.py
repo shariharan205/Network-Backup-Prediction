@@ -139,3 +139,12 @@ plt.scatter(x=data['day_number'],y=data['Size of Backup (GB)'],c=data['Workflow_
 plt.xlabel('Day number')
 plt.ylabel('Backup size (GB)')
 plt.show()
+
+
+"""========================================Fit linear regression model============================================="""
+
+print("Fit linear regression model after scalar encoding")
+input_features = ['Week #', 'Day of Week', 'Backup Start Time - Hour of Day', 'Work-Flow-ID', 'File Name']
+output_col_name = ['Size of Backup (GB)']
+X, y = scalar_encode(data, input_features, output_col_name)
+linear_regression(X, y)
