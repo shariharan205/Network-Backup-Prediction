@@ -141,10 +141,26 @@ plt.ylabel('Backup size (GB)')
 plt.show()
 
 
-"""========================================Fit linear regression model============================================="""
+"""========================================Data Preprocessing and Linear Regression============================================="""
 
 print("Fit linear regression model after scalar encoding")
 input_features = ['Week #', 'Day of Week', 'Backup Start Time - Hour of Day', 'Work-Flow-ID', 'File Name']
 output_col_name = ['Size of Backup (GB)']
 X, y = scalar_encode(data, input_features, output_col_name)
 linear_regression(X, y)
+
+"""===================================Feature Selection using f_regression and mutual information regression=============================="""
+
+print("Linear Regression Model after Feature Selection")
+most_imp_var_num = 3
+
+print("f_regression")
+X_f_regr = SelectKBest(score_func = f_regr, k = most_imp_var_num).fit_transform(X, y)
+linear_regression(X_f_regr, y)
+
+print("Mutual Information Regression")
+X_mutualinfo_regr = SelectKBest(score_func = mutual_info_regr, k = most_imp_var_num).fit_transform(X, y)
+linear_regression(X_mutualinfo_regr, y)
+
+
+
