@@ -221,4 +221,29 @@ print("Minimum Train RMSE " , min(avg_train_rmse), " for combination " , np.argm
 print("Minimum Test RMSE " ,  min(avg_test_rmse), " for combination " ,  np.argmin(avg_test_rmse))
 
 
+"""===================================================Regularizers================================================="""
 
+alpha_values = [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5,10]
+
+def regularization_optimization(model, alpha_range=alpha_values):
+    alpha_rmse = []
+
+    for alpha in alpha_range:
+
+        avg_test_rmse = []
+        for combination in feature_powerset:
+            X_copy = np.copy(X)
+            enc = OneHotEncoder(categorical_features=list(combination))
+            onehot_encoded = enc.fit_transform(X_copy)
+
+            if type(onehot_encoded) != np.ndarray:
+                onehot_encoded = onehot_encoded.toarray()
+
+            _, test_rmse = linear_regression(onehot_encoded, y, plot=False, model=model(alpha=alpha))
+            avg_test_rmse.append(test_rmse)
+
+        alpha_rmse.append(avg_test_rmse)
+
+    return alpha_rmse
+	
+	
