@@ -247,3 +247,44 @@ def regularization_optimization(model, alpha_range=alpha_values):
     return alpha_rmse
 	
 	
+regularizations = ["Ridge", "Lasso", "ElasticNet"]
+
+
+for reg in regularizations:
+
+    print("Finding the best parameters for ", reg)
+    plt.figure(figsize=(8, 5))
+    plt.xlabel("One-hot encoded Model")
+    plt.ylabel("Test RMSE")
+    plt.title("Test RMSE for One-hot encoded models for " + reg)
+
+    alpha_range = alpha_values
+    alpha_rmse = regularization_optimization(model=eval(reg), alpha_range=alpha_range)
+
+    for alpha in range(len(alpha_range)):
+        print(alpha, min(alpha_rmse[alpha]), np.argmin(alpha_rmse[alpha]))
+        plt.plot(x_range, alpha_rmse[alpha], label=alpha_range[alpha])
+
+    plt.legend(title="Regularization strength")
+    plt.show()
+
+
+
+X_copy = np.copy(X)
+enc = OneHotEncoder(categorical_features = [1, 2, 3, 4])
+onehot_encoded = enc.fit_transform(X_copy)
+
+if type(onehot_encoded) != np.ndarray:
+    onehot_encoded = onehot_encoded.toarray()
+
+train_rmse, test_rmse = linear_regression(onehot_encoded, y, model = Lasso(alpha = 0.001))
+print(train_rmse,test_rmse)
+
+train_rmse, test_rmse = linear_regression(onehot_encoded, y, model = ElasticNet(alpha = 0.001))
+print(train_rmse,test_rmse)
+
+train_rmse, test_rmse = linear_regression(onehot_encoded, y, model = Ridge(alpha = 0.001))
+print(train_rmse,test_rmse)
+
+
+"""=================================================================================================================="""
