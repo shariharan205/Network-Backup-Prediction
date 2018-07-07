@@ -19,3 +19,10 @@ from sklearn.tree import DecisionTreeRegressor
 #Loading data
 data = pd.read_csv('network_backup_dataset.csv')
 
+#Finding the day number
+day_map = {'Monday':1, 'Tuesday':2, 'Wednesday':3,'Thursday':4,'Friday':5,'Saturday':6,'Sunday':7}
+day_encoded = [day_map[i] for i in data['Day of Week']]
+data['day'] = day_encoded
+data['day_number'] = (data['Week #']-1)*7+day_encoded
+data['Workflow_ID'] = [int(i[10]) for i in data['Work-Flow-ID']]
+
