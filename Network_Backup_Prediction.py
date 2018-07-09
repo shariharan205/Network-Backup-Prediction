@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.tree import export_graphviz
 from sklearn.tree import DecisionTreeRegressor
 
+
 #Loading data
 data = pd.read_csv('network_backup_dataset.csv')
 
@@ -26,3 +27,15 @@ data['day'] = day_encoded
 data['day_number'] = (data['Week #']-1)*7+day_encoded
 data['Workflow_ID'] = [int(i[10]) for i in data['Work-Flow-ID']]
 
+data_20 = data[data['day_number']<=20]
+plt.scatter(x=data_20['day_number'],y=data_20['Size of Backup (GB)'],c=data_20['Workflow_ID'])
+plt.xlabel('Day number')
+plt.ylabel('Backup size (GB)')
+plt.legend()
+plt.show()
+
+plt.scatter(x=data['day_number'],y=data['Size of Backup (GB)'],c=data['Workflow_ID'])
+plt.xlabel('Day number')
+plt.ylabel('Backup size (GB)')
+plt.legend()
+plt.show()
