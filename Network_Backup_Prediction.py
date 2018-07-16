@@ -26,7 +26,6 @@ data['day'] = day_encoded
 data['day_number'] = (data['Week #']-1)*7+day_encoded
 data['Workflow_ID'] = [int(i[10]) for i in data['Work-Flow-ID']]
 
-#Plotting question 1a
 data_20 = data[data['day_number']<=20]
 plt.scatter(x=data_20['day_number'],y=data_20['Size of Backup (GB)'],c=data_20['Workflow_ID'])
 plt.xlabel('Day number')
