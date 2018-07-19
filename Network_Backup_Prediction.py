@@ -82,3 +82,18 @@ def kfold_cv(X,y,return_errors=False,regression='Linear',features=5,trees=20,dep
     if return_model:
         return best_model
     
+def show_plots(X,y,regressor):
+    y = y.values.ravel()
+    regressor.fit(X=X,y=y) 
+    y_pred = regressor.predict(X)
+    plt.scatter(range(len(X)),y_pred,c='red',label='Fitted value',edgecolors='none',zorder=2)
+    plt.scatter(range(len(X)),y,c='blue',label='True value',edgecolors='none',zorder=1)
+    plt.title('Fitted value vs true value for the model')
+    plt.legend()
+    plt.show()
+    
+    plt.scatter(range(len(X)),y_pred,c='red',label='Fitted value',edgecolors='none',zorder=1)
+    plt.scatter(range(len(X)),y-y_pred,c='blue',label='Residual',edgecolors='none',zorder=2)
+    plt.title('Residuals vs fitted values for the model')
+    plt.legend()
+    plt.show()  
