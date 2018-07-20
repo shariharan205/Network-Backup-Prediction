@@ -97,3 +97,15 @@ def show_plots(X,y,regressor):
     plt.title('Residuals vs fitted values for the model')
     plt.legend()
     plt.show()  
+	
+kfold_cv(scalar_data_X,scalar_data_y)
+show_plots(scalar_data_X,scalar_data_y,regressor=LinearRegression())
+    
+###############################################################################
+# Scale the data
+###############################################################################
+
+sc = StandardScaler()
+scaled_X = pd.DataFrame(sc.fit_transform(scalar_data_X))
+kfold_cv(scaled_X,scalar_data_y)
+show_plots(scaled_X,scalar_data_y,regressor=LinearRegression())
