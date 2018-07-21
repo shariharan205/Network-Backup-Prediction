@@ -109,3 +109,21 @@ sc = StandardScaler()
 scaled_X = pd.DataFrame(sc.fit_transform(scalar_data_X))
 kfold_cv(scaled_X,scalar_data_y)
 show_plots(scaled_X,scalar_data_y,regressor=LinearRegression())
+
+###############################################################################
+#  F Regression and Mutual Info Regression
+###############################################################################
+
+F,_ = f_regression(scalar_data_X,scalar_data_y.values.ravel())
+top_features = np.argsort(F)[-3:]
+print('The top features are', scalar_data_X.columns.values[top_features])
+f_top_X = scalar_data_X[scalar_data_X.columns.values[top_features]]
+kfold_cv(f_top_X,scalar_data_y)
+show_plots(f_top_X,scalar_data_y,regressor=LinearRegression())
+
+mi = mutual_info_regression(scalar_data_X,scalar_data_y.values.ravel())
+top_features = np.argsort(mi)[-3:]
+print('The top features are', scalar_data_X.columns.values[top_features])
+f_top_X = scalar_data_X[scalar_data_X.columns.values[top_features]]
+kfold_cv(f_top_X,scalar_data_y)
+show_plots(f_top_X,scalar_data_y,regressor=LinearRegression())
