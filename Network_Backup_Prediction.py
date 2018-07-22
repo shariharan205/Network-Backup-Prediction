@@ -127,3 +127,51 @@ print('The top features are', scalar_data_X.columns.values[top_features])
 f_top_X = scalar_data_X[scalar_data_X.columns.values[top_features]]
 kfold_cv(f_top_X,scalar_data_y)
 show_plots(f_top_X,scalar_data_y,regressor=LinearRegression())
+
+###############################################################################
+# One-Hot encoding
+###############################################################################
+
+onehotencoder = OneHotEncoder(categorical_features = 'all')
+onehot_week = pd.DataFrame(onehotencoder.fit_transform(scalar_data_X['Week #'].reshape(-1,1)).toarray()[:,1:])
+onehot_day = pd.DataFrame(onehotencoder.fit_transform(scalar_data_X['day'].reshape(-1,1)).toarray()[:,1:])
+onehot_time = pd.DataFrame(onehotencoder.fit_transform(scalar_data_X['Backup Start Time - Hour of Day'].reshape(-1,1)).toarray()[:,1:])
+onehot_workflow = pd.DataFrame(onehotencoder.fit_transform(scalar_data_X['Workflow_ID'].reshape(-1,1)).toarray()[:,1:])
+onehot_file = pd.DataFrame(onehotencoder.fit_transform(scalar_data_X['File_number'].reshape(-1,1)).toarray()[:,1:])
+
+scalar_week = pd.DataFrame(scalar_data_X['Week #'])
+scalar_day = pd.DataFrame(scalar_data_X['day'])
+scalar_time = pd.DataFrame(scalar_data_X['Backup Start Time - Hour of Day'])
+scalar_workflow = pd.DataFrame(scalar_data_X['Workflow_ID'])
+scalar_file = pd.DataFrame(scalar_data_X['File_number'])
+
+d = {0:[scalar_week,onehot_week],1:[scalar_day,onehot_day],2:[scalar_time,onehot_time],
+        3:[scalar_workflow,onehot_workflow],4:[scalar_file,onehot_file]}
+
+train_err,test_err = [], []
+for number in range(32):
+    num = np.binary_repr(number, width=5)
+    frames = []
+    for i in range(len(num)):
+        if int(num[i])==0:
+            frames.append(d[i][0])
+        else:
+            frames.append(d[i][1])            
+    result = pd.concat(frames,axis=1)
+    train,test = kfold_cv(result,scalar_data_y,return_errors=True)
+    train_err.append(train)
+    test_err.append(test)
+    
+plt.plot(range(1,33),test_err,c='blue',label='Testing error')
+plt.legend()
+plt.xlabel('Combination number')
+plt.ylabel('Root mean square error')
+plt.title('Testing error for different combinations')
+plt.show()    
+
+plt.plot(range(1,33),train_err,c='red',label='Training error')
+plt.legend()
+plt.xlabel('Combination number')
+plt.ylabel('Root mean square error')
+plt.title('Training error for different combinations')
+plt.show()    
