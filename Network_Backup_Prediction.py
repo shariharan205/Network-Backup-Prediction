@@ -175,3 +175,38 @@ plt.xlabel('Combination number')
 plt.ylabel('Root mean square error')
 plt.title('Training error for different combinations')
 plt.show()    
+
+###############################################################################
+# Accuracy vs Degree of Polynomial in Regression
+###############################################################################
+
+num_workflow = len(set(scalar_data['Workflow_ID']))
+for i in range(num_workflow):
+    subset_data = scalar_data[scalar_data['Workflow_ID']==i]
+    y = subset_data[[-1]]
+    X = subset_data[['Week #', 'day', 'Backup Start Time - Hour of Day','File_number']]
+    print('The workflow ID number is', i)
+    best_model = kfold_cv(X,y,return_model=True)
+    show_plots(X,y,best_model)
+    
+    
+for i in range(num_workflow):
+    train_err = []
+    test_err = []
+    subset_data = scalar_data[scalar_data['Workflow_ID']==i]
+    y = subset_data[[-1]]
+    X = subset_data[['Week #', 'day', 'Backup Start Time - Hour of Day','File_number']]
+    for degree in range(2,10):
+        poly_reg = PolynomialFeatures(degree = degree)
+        X_poly = pd.DataFrame(poly_reg.fit_transform(X))
+        train,test=kfold_cv(X_poly,y,return_errors=True)
+        train_err.append(train)
+        test_err.append(test)
+        
+    plt.plot(range(2,10),train_err,c='red',label='Training error')
+    plt.plot(range(2,10),test_err,c='blue',label='Testing error')
+    plt.legend()
+    plt.xlabel('Polynomial degree')
+    plt.ylabel('Root mean square error')
+    plt.title('Error for polynomial degrees for workflow id = %d'%i)
+    plt.show()    
