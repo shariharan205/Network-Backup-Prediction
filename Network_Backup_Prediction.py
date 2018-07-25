@@ -209,4 +209,27 @@ for i in range(num_workflow):
     plt.xlabel('Polynomial degree')
     plt.ylabel('Root mean square error')
     plt.title('Error for polynomial degrees for workflow id = %d'%i)
-    plt.show()    
+    plt.show() 
+
+###############################################################################
+# K-Nearest Neighbors
+###############################################################################
+min_error = 1e5
+train_err,test_err = [], []
+for k in range(1,11):
+    train,test = kfold_cv(scaled_X,scalar_data_y,regression='KNN',k=k,return_errors=True)
+    train_err.append(train)
+    test_err.append(test)
+    if test<min_error:
+        min_error = test
+        best_k = k
+plt.plot(range(1,11),test_err,label='Test error')
+plt.ylabel('Test RMSE')
+plt.xlabel('Number of neighbors')
+plt.title('Test error for different number of neighbors')
+plt.legend()
+plt.show()  
+
+best_model=kfold_cv(scaled_X,scalar_data_y,regression='KNN',k=best_k,return_model=True)  
+show_plots(scaled_X,scalar_data_y,best_model)
+	
