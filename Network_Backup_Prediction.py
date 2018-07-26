@@ -270,3 +270,20 @@ plt.ylabel('Test error')
 plt.title('Test error for different hidden layer size')
 plt.show()
 print('The best model is:',best_model)
+
+
+###############################################################################
+#Random Forest
+###############################################################################
+
+kfold_cv(scalar_data_X,scalar_data_y,regression='RF')
+show_plots(scalar_data_X,scalar_data_y,regressor=RandomForestRegressor(n_estimators=20,max_depth =4,oob_score=True,
+                                                                       max_features=5,bootstrap=True))
+
+def oob(X,y,features=5,trees=20,depth=4):
+    regressor = RandomForestRegressor(n_estimators=trees,max_depth =depth,max_features=features,
+                                      oob_score=True, bootstrap=True)
+    regressor.fit(X,y.values.ravel())
+    return (1-regressor.oob_score_)
+    
+print(oob(scalar_data_X,scalar_data_y))
