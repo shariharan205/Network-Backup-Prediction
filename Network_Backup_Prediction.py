@@ -233,3 +233,40 @@ plt.show()
 best_model=kfold_cv(scaled_X,scalar_data_y,regression='KNN',k=best_k,return_model=True)  
 show_plots(scaled_X,scalar_data_y,best_model)
 	
+
+###############################################################################
+# Neural Network
+###############################################################################
+
+onehots = [onehot_week,onehot_day,onehot_time,onehot_workflow,onehot_file]
+onehot_data = pd.concat(onehots,axis=1)
+hidden_size_range = range(10,510,10)
+test_error_act = []
+best_err = 1e7
+for activation in ('relu','logistic','tanh'):
+    test_error_h = []
+    for hidden_size in hidden_size_range:
+        print('Hidden size is', hidden_size)
+        test_error_k = []
+        kf = KFold(n_splits=10,shuffle=True)
+        for trainset, testset in kf.split(onehot_data):
+            regressor = MLPRegressor(hidden_layer_sizes=(hidden_size,),activation=activation)
+            regressor.fit(X=onehot_data.iloc[trainset],y=scalar_data_y.iloc[trainset])
+            y_pred_test = regressor.predict(onehot_data.iloc[testset])
+            test_mse = mean_squared_error(scalar_data_y.iloc[testset],y_pred_test)
+            test_error_k.append(test_mse)  
+        test_rmse = np.sqrt(np.mean(test_error_k))
+        if test_rmse<best_err:
+            best_err = test_rmse
+            best_model = regressor
+        test_error_h.append(test_rmse)  
+    test_error_act.append(test_error_h)
+plt.plot(hidden_size_range,test_error_act[0],c='red',label='Relu activation')
+plt.plot(hidden_size_range,test_error_act[1],c='blue',label='Logistic activation')
+plt.plot(hidden_size_range,test_error_act[2],c='green',label='Tanh activation')
+plt.legend(loc=5)
+plt.xlabel('Hidden layer size')
+plt.ylabel('Test error')
+plt.title('Test error for different hidden layer size')
+plt.show()
+print('The best model is:',best_model)
