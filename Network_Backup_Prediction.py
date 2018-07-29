@@ -287,3 +287,32 @@ def oob(X,y,features=5,trees=20,depth=4):
     return (1-regressor.oob_score_)
     
 print(oob(scalar_data_X,scalar_data_y))
+
+tree_range = range(1,201)
+oob_feats,testerr_feats = [],[]
+for num_feats in range(1,6):
+    oob_trees,testerr_trees = [],[]
+    for num_trees in tree_range:
+        oob_trees.append(oob(scalar_data_X,scalar_data_y,features=num_feats,trees=num_trees))
+        _,test_err = kfold_cv(scalar_data_X,scalar_data_y,return_errors=True,regression='RF',
+                              features=num_feats,trees=num_trees)
+        testerr_trees.append(test_err)
+    oob_feats.append(oob_trees)
+    testerr_feats.append(testerr_trees)
+
+for i in range(5):
+    plt.plot(tree_range,testerr_feats[i],label='Max features = '+str(i+1))
+plt.legend()
+plt.xlabel('Number of trees')
+plt.ylabel('Test error')
+plt.title('Test error for different tree size')
+plt.show() 
+   
+for i in range(5):    
+    plt.plot(tree_range,oob_feats[i],label='Max features = '+str(i+1))
+plt.xlabel('Number of trees')
+plt.ylabel('Out of bag error')
+plt.legend()
+plt.title('Out of bag error for different tree size')
+plt.show()    
+
