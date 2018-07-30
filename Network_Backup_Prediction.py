@@ -316,3 +316,11 @@ plt.legend()
 plt.title('Out of bag error for different tree size')
 plt.show()    
 
+###############################################################################
+#Decision Tree
+###############################################################################
+
+dec_tree = DecisionTreeRegressor(max_depth=4,max_features=3)
+dec_tree.fit(scalar_data_X,scalar_data_y.values.ravel())
+export_graphviz(dec_tree,out_file='tree2.dot') 
+
