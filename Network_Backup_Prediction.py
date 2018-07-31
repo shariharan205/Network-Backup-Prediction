@@ -324,3 +324,13 @@ dec_tree = DecisionTreeRegressor(max_depth=4,max_features=3)
 dec_tree.fit(scalar_data_X,scalar_data_y.values.ravel())
 export_graphviz(dec_tree,out_file='tree2.dot') 
 
+
+###############################################################################
+#Random Forest Regressor
+###############################################################################
+
+regressor = RandomForestRegressor(n_estimators=70,max_depth =5,max_features=3,
+                                  oob_score=True, bootstrap=True)
+regressor.fit(scalar_data_X,scalar_data_y.values.ravel())
+importances = regressor.feature_importances_
+print(importances)
